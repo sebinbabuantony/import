@@ -1,0 +1,174 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///NEW ONE
+
+package com.example.bmi_caluculator_vishnu;
+
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    private EditText weightInput, heightInput;
+    private TextView resultText;
+
+    @SuppressLint("MissingInflatedId")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Initialize views
+        weightInput = findViewById(R.id.weightInput);
+        heightInput = findViewById(R.id.heightInput);
+        resultText = findViewById(R.id.resultText);
+        Button calculateButton = findViewById(R.id.calculateButton);
+
+        // Set button click listener
+        calculateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calculateBMI();
+            }
+        });
+    }
+
+    // Function to calculate BMI
+    private void calculateBMI() {
+        // Get user input
+        String weightString = weightInput.getText().toString();
+        String heightString = heightInput.getText().toString();
+
+        // Check if the inputs are empty
+        if (weightString.isEmpty() || heightString.isEmpty()) {
+            Toast.makeText(this, "Please enter both weight and height", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Convert input to double
+        double weight = Double.parseDouble(weightString);
+        double height = Double.parseDouble(heightString);
+
+        // Calculate BMI
+        if (height > 0) {
+            double bmi = weight / (height * height);
+
+            // Display the result
+            resultText.setText(String.format("Your BMI: %.2f", bmi));
+
+            // Optional: Show BMI category
+            if (bmi < 18.5) {
+                resultText.append("\nCategory: Underweight");
+            } else if (bmi >= 18.5 && bmi < 24.9) {
+                resultText.append("\nCategory: Normal weight");
+            } else if (bmi >= 25 && bmi < 29.9) {
+                resultText.append("\nCategory: Overweight");
+            } else {
+                resultText.append("\nCategory: Obese");
+            }
+        } else {
+            Toast.makeText(this, "Height cannot be zero or negative", Toast.LENGTH_SHORT).show();
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <!-- Weight input -->
+    <TextView
+        android:id="@+id/labelWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter your weight (kg):"
+        android:textSize="18sp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="50dp" />
+
+    <EditText
+        android:id="@+id/weightInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Weight in kg"
+        android:inputType="numberDecimal"
+        android:layout_below="@id/labelWeight"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Height input -->
+    <TextView
+        android:id="@+id/labelHeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter your height (m):"
+        android:textSize="18sp"
+        android:layout_below="@id/weightInput"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:id="@+id/heightInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Height in meters"
+        android:inputType="numberDecimal"
+        android:layout_below="@id/labelHeight"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Calculate Button -->
+    <Button
+        android:id="@+id/calculateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calculate BMI"
+        android:layout_below="@id/heightInput"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"/>
+
+    <!-- BMI Result -->
+    <TextView
+        android:id="@+id/resultText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your BMI will appear here"
+        android:textSize="20sp"
+        android:layout_below="@id/calculateButton"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"/>
+</RelativeLayout>
+
